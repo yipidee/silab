@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F00FAA"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/render_textview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingLeft="12dp"
+        android:background="#FFFFFF"
+        android:text="@string/hello_world"
+        android:textSize="24sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="12dp"
+        android:text="@string/emoji_selection_title"
+        android:textSize="32sp"
+        android:textColor="#033D80"/>
+
+    <Spinner
+        android:id="@+id/emoji_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="12dp"/>
+
+    <EditText
+        android:id="@+id/user_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/string_input_title"
+        android:inputType="text"
+        android:textSize="32sp"
+        android:paddingLeft="12dp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#1289CD"
+        android:text="@string/button_text"
+        android:textSize="32sp"
+        android:textColor="#DC9821"
+        android:onClick="render"/>
+
+</LinearLayout>

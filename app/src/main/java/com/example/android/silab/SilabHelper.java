@@ -32,24 +32,24 @@ public class SilabHelper {
     private final int[][][] maps = {
             {
                     //A
-                    {0,0,0,1,0,0,0},
-                    {0,0,1,0,1,0,0},
-                    {0,1,0,0,0,1,0},
-                    {0,1,1,1,1,1,0},
-                    {0,1,0,0,0,0,1},
-                    {0,1,0,0,0,0,1},
-                    {0,1,0,0,0,0,1}
+                    {0,0,0,0,0,0,0,0,0,1},
+                    {0,0,0,0,0,0,1,0,1},
+                    {0,0,0,1,0,0,0,0,0,0,1},
+                    {0,1,1,1,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+                    {1,0,0,0,0,0,0,0,0,0,0,0,0,1}
             },
 
             {
                     //B
-                    {0,1,1,1,1,0,0},
-                    {0,1,0,0,0,1,0},
-                    {0,1,0,0,0,1,0},
-                    {0,1,1,1,1,0,0},
-                    {0,1,0,0,0,1,0},
-                    {0,1,0,0,0,1,0},
-                    {0,1,1,1,1,0,0}
+                    {1,1,1,1,0},
+                    {1,0,0,0,1},
+                    {1,0,0,0,1},
+                    {1,1,1,1,0},
+                    {1,0,0,0,1},
+                    {1,0,0,0,1},
+                    {1,1,1,1,0}
             },
 
             {
@@ -73,7 +73,7 @@ public class SilabHelper {
     //constructor for this helper class
     public SilabHelper(){
         //On construction the emoji list is populated from the byte array above,
-        //the Character Map is contructed
+        //the Character Map is constructed
         populateEmojiList();
         buildCharMap();
     }

@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
         List<String> emojiList = sh.getEmojiList();
 
         //Create string array adapter for dropdown list (emoji)
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, // current context
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, // current context
                                                                 android.R.layout.simple_spinner_dropdown_item, //default android dropdown
                                                                 emojiList //list of emoji created from Strings
                                                                 );
@@ -78,17 +78,28 @@ public class MainActivity extends Activity {
          * and renders the character using the emoji.
          */
 
-        String space = "\u3000"; // a double width space, literally same as using 2 standard space. kind of pointless...
+        String space = "\u0020"; // a double width space, literally same as using 2 standard space. kind of pointless...
         String selectedEmoji = (String)spinner.getSelectedItem(); // store selected emoji
 
         String emojisedString = ""; //what will become the final product
-        TextView renderView = (TextView)findViewById(R.id.render_textview); //handle to the render view
-        EditText userInput = (EditText)findViewById(R.id.user_text); //handle to the user input
 
-        char mapToUse = userInput.getText().charAt(0); //only reading first char at minute TODO incomplete
-        if((int)mapToUse>90) mapToUse=(char)((int)mapToUse-32); //ugly hack to capitalise characters TODO make this nicer
+        //handle to the render view
+        TextView renderView = (TextView)findViewById(R.id.render_textview);
 
-            if(charMap.containsKey(mapToUse)) { //check if there is a map for this character
+        //handle to the user input
+        EditText userInput = (EditText)findViewById(R.id.user_text);
+
+        //For test Purposes make user input currently available characters
+        //TODO remove this test data
+        userInput.setText("abc");
+
+        if(userInput.getText().toString().length()!=0) { //check for no user input
+            char mapToUse = userInput.getText().charAt(0); //only reading first char at minute TODO incomplete
+
+            if ((int) mapToUse > 90)
+                mapToUse = (char) ((int) mapToUse - 32); //ugly hack to capitalise characters TODO make this nicer
+
+            if (charMap.containsKey(mapToUse)) { //check if there is a map for this character
 
                 int[][] map = charMap.get(mapToUse);  //The map for the input character
 
@@ -107,6 +118,7 @@ public class MainActivity extends Activity {
                     emojisedString = emojisedString + "\n"; //'new line' character
                 }
             }
+        }
 
         // where the new emojified string is written to render view
         renderView.setText(emojisedString);

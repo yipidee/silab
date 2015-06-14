@@ -19,7 +19,9 @@
             android:layout_centerInParent="true"
             android:background="#FFFFFF"
             android:text="@string/hello_world"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:textIsSelectable="true"
+            android:onClick="share"/>
 
     </RelativeLayout>
 

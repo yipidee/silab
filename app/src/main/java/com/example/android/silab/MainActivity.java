@@ -128,6 +128,7 @@ public class MainActivity extends Activity {
                     shareImage();
                 }
             });
+            
             AlertDialog dialog = builder.create();
             dialog.show();
         }

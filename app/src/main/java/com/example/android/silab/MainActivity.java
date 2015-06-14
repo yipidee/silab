@@ -177,7 +177,7 @@ public class MainActivity extends Activity {
             // file creation fails for whatever reason
             displayDialog(R.string.error_file_open);
             e.printStackTrace();
-        }
+       }
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.PNG, 0, bos);

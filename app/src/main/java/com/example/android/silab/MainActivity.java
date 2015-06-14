@@ -94,6 +94,7 @@ public class MainActivity extends Activity {
 
         //handle to the user input
         EditText userInput = (EditText) findViewById(R.id.user_text);
+
         userString = userInput.getText().toString();
         userString = userString.toUpperCase();
 

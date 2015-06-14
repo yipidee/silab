@@ -170,7 +170,7 @@ public class MainActivity extends Activity {
          *   gmail:      OK
          */
 
-        if(isRendered){
+        if(false){//isRendered){
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT, renderView.getText());

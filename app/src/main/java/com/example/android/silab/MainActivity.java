@@ -146,7 +146,6 @@ public class MainActivity extends Activity {
          *   WA:        OK (cropped)
          */
 
-
         // Create bitmap
         Bitmap bm = Bitmap.createBitmap(renderView.getDrawingCache());
 

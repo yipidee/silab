@@ -97,7 +97,7 @@ public class MainActivity extends Activity {
 
         /*//For test Purposes make user input currently available characters
         //TODO remove this test data
-        userInput.setText("b a cf");
+        userInput.setText("happy birthday!");
         */
 
         String userString = "";
@@ -170,7 +170,7 @@ public class MainActivity extends Activity {
          *   gmail:      OK
          */
 
-        if(isRendered){
+        if(false){//isRendered){
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT, renderView.getText());

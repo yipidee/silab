@@ -257,5 +257,4 @@ public class MainActivity extends Activity {
     public void openInput(View v){
         kb.show(getFragmentManager(),"test");
     }
-
 }

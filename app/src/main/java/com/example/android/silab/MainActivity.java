@@ -89,13 +89,13 @@ public class MainActivity extends Activity {
          */
 
         //Variables to contain user input and output
-        String userString = "";
         String emojified = "";
 
         //handle to the user input
+
         EditText userInput = (EditText) findViewById(R.id.user_text);
 
-        userString = userInput.getText().toString();
+        String userString = userInput.getText().toString();
         userString = userString.toUpperCase();
 
         char[] userCharArray = userString.toCharArray();
@@ -145,6 +145,7 @@ public class MainActivity extends Activity {
          *   Line:      OK
          *   WA:        OK (cropped)
          */
+
 
         // Create bitmap
         Bitmap bm = Bitmap.createBitmap(renderView.getDrawingCache());
@@ -246,9 +247,11 @@ public class MainActivity extends Activity {
                     emojisedString = emojisedString + "\n"; //'new line' character
                 }
                 // 'new line' for between characters, except for last character
-                if (i != input.length - 1) emojisedString = emojisedString + "\n";
-            } else {
-                displayDialog(R.string.error_no_map);
+                if (i != input.length - 1) {
+                    emojisedString = emojisedString + "\n";
+                } else {
+                    displayDialog(R.string.error_no_map);
+                }
             }
         }
         // return emojified string

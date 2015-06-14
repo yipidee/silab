@@ -266,7 +266,7 @@ public class MainActivity extends Activity {
                     displayDialog(R.string.error_no_map);
                 }
             }
-        }
+       }
         // return emojified string
         return emojisedString;
     }

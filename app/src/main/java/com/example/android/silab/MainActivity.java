@@ -84,83 +84,30 @@ public class MainActivity extends Activity {
          * and renders the character using the emoji.
          */
 
-        String space = "\u0020"; // single space..
-        String selectedEmoji = (String)spinner.getSelectedItem(); // store selected emoji
-
-        String emojisedString = ""; //what will become the final product
-
-        //handle to the render view
-        renderView = (TextView)findViewById(R.id.render_textview);
-
-        //handle to the user input
-        EditText userInput = (EditText)findViewById(R.id.user_text);
-
         /*//For test Purposes make user input currently available characters
         //TODO remove this test data
         userInput.setText("b a cf");
         */
 
+        //Variables to contain user input and output
         String userString = "";
+        String emojified = "";
+        
+        //handle to the user input
+        EditText userInput = (EditText)findViewById(R.id.user_text);
         userString = userInput.getText().toString();
-        userString=userString.toUpperCase();
+        userString = userString.toUpperCase();
 
         char[] userCharArray = userString.toCharArray();
 
-        if(!userString.equals("")) { //check for no user input
-            for (int i=0; i<userCharArray.length; i++) {
-
-                char mapToUse = userCharArray[i];  // Get each character in order
-
-                if (charMap.containsKey(mapToUse)) { //check if there is a map for this character
-
-                    int[][] map = charMap.get(mapToUse);  //The map for the input character
-
-                    //This is what turns the map into the emoji based string.(as long as there's a map)
-                    for (int m = 0; m < map.length; m++) {
-                        for (int n = 0; n < map[m].length; n++) {
-                            switch (map[m][n]) {
-                                case (0):
-                                    emojisedString = emojisedString + space;
-                                    break;
-                                case (1):
-                                    emojisedString = emojisedString + selectedEmoji;
-                                    break;
-                            }
-                        }
-                        emojisedString = emojisedString + "\n"; //'new line' character
-                    }
-                    // 'new line' for between characters, except for last character
-                    if(i!=userString.length()-1) emojisedString = emojisedString + "\n";
-                }else{
-                    //Creates an error dialog to inform the user about characters that can't be drawn
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage(R.string.error_no_map);
-                    builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Do nothing? Just let the dialog close and get garbage collected
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }
-            }
-            // where the new emojified string is written to render view
-            renderView.setText(emojisedString);
-            isRendered=true;
+        if(userCharArray.length!=0) { //check for no user input
+            emojified = makeEmojisedString(userCharArray);
         }else{
-            //Creates an error dialog to inform the user that they haven't input anything
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(R.string.error_no_input);
-            builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // Do nothing? Just let the dialog close and get garbage collected
-                }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            displayDialog(R.string.error_no_input);
         }
+        // render text to view
+        renderView.setText(emojified);
+        isRendered = true;
     }
 
     public void share(View v){
@@ -168,6 +115,8 @@ public class MainActivity extends Activity {
          * Tested with:
          *   Hangouts:   NG
          *   gmail:      OK
+         *   Facebook:   NG
+         *   FB mess:    NG
          */
 
         if(isRendered){
@@ -177,5 +126,65 @@ public class MainActivity extends Activity {
             sendIntent.setType("text/plain");
             startActivity(sendIntent);
         }
+    }
+
+    protected void displayDialog(int errorMessage){
+        // Displays a error dialog, with an ok button to close
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(errorMessage);
+        builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing? Just let the dialog close and get garbage collected
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    protected Boolean mapExists(char key){
+        return charMap.containsKey(key);
+    }
+
+    protected String makeEmojisedString(char[] input){
+        String space = " ";  // simple ASCII space
+        String selectedEmoji = (String)spinner.getSelectedItem(); // store selected emoji
+
+        //Variable to store emojised string
+        String emojisedString = "";
+
+        //handle to the render view
+        renderView = (TextView)findViewById(R.id.render_textview);
+
+        for (int i=0; i<input.length; i++) {
+
+            char mapToUse = input[i];  // Get each character in order
+
+            if (mapExists(mapToUse)) { //check if there is a map for this character
+
+                int[][] map = charMap.get(mapToUse);  //The map for the input character
+
+                //This is what turns the map into the emoji based string.(as long as there's a map)
+                for (int m = 0; m < map.length; m++) {
+                    for (int n = 0; n < map[m].length; n++) {
+                        switch (map[m][n]) {
+                            case (0):
+                                emojisedString = emojisedString + space;
+                                break;
+                            case (1):
+                                emojisedString = emojisedString + selectedEmoji;
+                                break;
+                        }
+                    }
+                    emojisedString = emojisedString + "\n"; //'new line' character
+                }
+                // 'new line' for between characters, except for last character
+                if(i!=input.length-1) emojisedString = emojisedString + "\n";
+            }else{
+                displayDialog(R.string.error_no_map);
+            }
+        }
+        // return emojified string
+        return emojisedString;
     }
 }

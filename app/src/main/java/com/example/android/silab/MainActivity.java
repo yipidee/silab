@@ -23,7 +23,19 @@ import java.io.IOException;
 import java.util.Hashtable;
 import java.util.List;
 
-
+/* The main activity for silab, renders layout, gets input, sets output etc.
+ *
+ * Currently implemented
+ *  - rendering emoji string
+ *  - sharing image of rendered string
+ *
+ * To be implemented
+ *  - TODO Selecting to send as text or image
+ *  - TODO have multiple emoji in one message
+ *  - TODO improve emjoi input method (emoji gridlike keyboard?)
+ *  - TODO add multiple emoji fonts for image option
+ *
+ */
 public class MainActivity extends Activity {
 
     Hashtable<Character, int[][]> charMap;      //global variable for character maps
@@ -45,14 +57,14 @@ public class MainActivity extends Activity {
 
         //Create string array adapter for dropdown list (emoji)
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, // current context
-                                                                android.R.layout.simple_spinner_dropdown_item, //default android dropdown
-                                                                emojiList //list of emoji created from Strings
-                                                                );
+                android.R.layout.simple_spinner_dropdown_item, //default android dropdown
+                emojiList //list of emoji created from Strings
+        );
         // make the list plain dropdown
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         //get a handle on the emoji selection dropdown
-        spinner = (Spinner)findViewById(R.id.emoji_selector);
+        spinner = (Spinner) findViewById(R.id.emoji_selector);
         //populate drop down with above adapter
         spinner.setAdapter(adapter);
 
@@ -60,7 +72,7 @@ public class MainActivity extends Activity {
         charMap = sh.getCharMap();
     }
 
-    // this is automatically created, did touch this function
+    // this is automatically created, didn't touch this function
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -68,7 +80,7 @@ public class MainActivity extends Activity {
         return true;
     }
 
-    // this is automatically created, did touch this function
+    // this is automatically created, didn't touch this function
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -84,8 +96,8 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    //Wrote this function. It's doing the heavy lifting
-    public void render(View v){
+    // Function that creates emojified string
+    public void render(View v) {
         /* This is where the magic happens. Takes user string and selected emoji
          * and renders the character using the emoji.
          */
@@ -95,15 +107,15 @@ public class MainActivity extends Activity {
         String emojified = "";
 
         //handle to the user input
-        EditText userInput = (EditText)findViewById(R.id.user_text);
+        EditText userInput = (EditText) findViewById(R.id.user_text);
         userString = userInput.getText().toString();
         userString = userString.toUpperCase();
 
         char[] userCharArray = userString.toCharArray();
 
-        if(userCharArray.length!=0) { //check for no user input
+        if (userCharArray.length != 0) { //check for no user input
             emojified = makeEmojisedString(userCharArray);
-        }else{
+        } else {
             displayDialog(R.string.error_no_input);
         }
         // render text to view
@@ -111,29 +123,30 @@ public class MainActivity extends Activity {
         isRendered = true;
     }
 
-    public void share(View v){
+    // Function that creates and shares images of emojified string
+    public void share(View v) {
         /* Bare bones intent to send renderView as image.
          * Tested with:
-         *   Hangouts:
-         *   gmail:
+         *   Hangouts:  OK
+         *   gmail:     OK (cropped)
          *   Facebook:
-         *   FB mess:
+         *   FB mess:   OK
+         *   Line:      OK
+         *   WA:        OK (cropped)
          */
 
-        if(isRendered){
+        if (isRendered) {
 
             // Create bitmap
             Bitmap bm = Bitmap.createBitmap(renderView.getDrawingCache());
-            //Bitmap bm= Bitmap.createBitmap(view_bm,0,0,renderView.getWidth(),(int)(renderView.getLineCount()*renderView.getTextSize()));
-            //Canvas c = new Canvas(bm); // create a canvas from the bitmap
 
             // file to store PNG image of renderView content
             // this is only a file object, it doesn't create a file on disc
-            File f = new File(Environment.getExternalStorageDirectory()+File.separator, "tmp_emojified.png");
+            File f = new File(Environment.getExternalStorageDirectory() + File.separator, "tmp_emojified.png");
 
             try {
                 f.createNewFile(); // create the file
-            }catch(IOException e){
+            } catch (IOException e) {
                 // file creation fails for whatever reason
                 displayDialog(R.string.error_file_open);
                 e.printStackTrace();
@@ -143,12 +156,12 @@ public class MainActivity extends Activity {
             bm.compress(Bitmap.CompressFormat.PNG, 0, bos);
             byte[] bitmapdata = bos.toByteArray();
 
-            try{
+            try {
                 FileOutputStream fos = new FileOutputStream(f);
                 fos.write(bitmapdata);
                 fos.flush();
                 fos.close();
-            }catch(IOException e){
+            } catch (IOException e) {
                 // catchs error thrown when problem with file IO
                 e.printStackTrace();
             }
@@ -161,7 +174,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    protected void displayDialog(int errorMessage){
+    protected void displayDialog(int errorMessage) {
         // Displays a error dialog, with an ok button to close
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(errorMessage);
@@ -175,22 +188,22 @@ public class MainActivity extends Activity {
         dialog.show();
     }
 
-    protected Boolean mapExists(char key){
+    protected Boolean mapExists(char key) {
         return charMap.containsKey(key);
     }
 
-    protected String makeEmojisedString(char[] input){
+    protected String makeEmojisedString(char[] input) {
         String space = " ";  // simple ASCII space
-        String selectedEmoji = (String)spinner.getSelectedItem(); // store selected emoji
+        String selectedEmoji = (String) spinner.getSelectedItem(); // store selected emoji
 
         //Variable to store emojised string
         String emojisedString = "";
 
         //handle to the render view
-        renderView = (TextView)findViewById(R.id.render_textview);
+        renderView = (TextView) findViewById(R.id.render_textview);
         renderView.setDrawingCacheEnabled(true);
 
-        for (int i=0; i<input.length; i++) {
+        for (int i = 0; i < input.length; i++) {
 
             char mapToUse = input[i];  // Get each character in order
 
@@ -213,8 +226,8 @@ public class MainActivity extends Activity {
                     emojisedString = emojisedString + "\n"; //'new line' character
                 }
                 // 'new line' for between characters, except for last character
-                if(i!=input.length-1) emojisedString = emojisedString + "\n";
-            }else{
+                if (i != input.length - 1) emojisedString = emojisedString + "\n";
+            } else {
                 displayDialog(R.string.error_no_map);
             }
         }

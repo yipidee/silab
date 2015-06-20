@@ -7,7 +7,6 @@
     tools:context=".MainActivity">
 
    <ScrollView
-       android:id="@+id/render_scrollview"
        android:layout_width="match_parent"
        android:layout_height="0dp"
        android:layout_weight="1"
@@ -21,7 +20,8 @@
             android:text="@string/hello_world"
             android:textSize="24sp"
             android:textIsSelectable="true"
-            android:onClick="share"/>
+            android:onClick="share"
+            android:layout_gravity="center"/>
 
     </ScrollView>
 

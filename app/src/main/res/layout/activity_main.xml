@@ -21,7 +21,7 @@
             android:textSize="24sp"
             android:textIsSelectable="true"
             android:onClick="share"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center_horizontal"/>
 
     </ScrollView>
 

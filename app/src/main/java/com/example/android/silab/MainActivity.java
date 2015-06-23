@@ -123,8 +123,31 @@ public class MainActivity extends Activity {
         isRendered = true;
     }
 
+    // Share function
+    // Presents user with option to share text or image
+    public void share(View v){
+        if(isRendered) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.message_share);
+            builder.setPositiveButton(R.string.button_string, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    shareText();
+                }
+            });
+            builder.setNegativeButton(R.string.button_image, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    shareImage();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+    }
+
     // Function that creates and shares images of emojified string
-    public void share(View v) {
+    protected void shareImage() {
         /* Bare bones intent to send renderView as image.
          * Tested with:
          *   Hangouts:  OK
@@ -135,43 +158,48 @@ public class MainActivity extends Activity {
          *   WA:        OK (cropped)
          */
 
-        if (isRendered) {
+        // Create bitmap
+        Bitmap bm = Bitmap.createBitmap(renderView.getDrawingCache());
 
-            // Create bitmap
-            Bitmap bm = Bitmap.createBitmap(renderView.getDrawingCache());
+        // file to store PNG image of renderView content
+        // this is only a file object, it doesn't create a file on disc
+        File f = new File(Environment.getExternalStorageDirectory() + File.separator, "tmp_emojified.png");
 
-            // file to store PNG image of renderView content
-            // this is only a file object, it doesn't create a file on disc
-            File f = new File(Environment.getExternalStorageDirectory() + File.separator, "tmp_emojified.png");
-
-            try {
-                f.createNewFile(); // create the file
-            } catch (IOException e) {
-                // file creation fails for whatever reason
-                displayDialog(R.string.error_file_open);
-                e.printStackTrace();
-            }
-
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bm.compress(Bitmap.CompressFormat.PNG, 0, bos);
-            byte[] bitmapdata = bos.toByteArray();
-
-            try {
-                FileOutputStream fos = new FileOutputStream(f);
-                fos.write(bitmapdata);
-                fos.flush();
-                fos.close();
-            } catch (IOException e) {
-                // catchs error thrown when problem with file IO
-                e.printStackTrace();
-            }
-
-            Intent shareIntent = new Intent();
-            shareIntent.setAction(Intent.ACTION_SEND);
-            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(f));
-            shareIntent.setType("image/png");
-            startActivity(Intent.createChooser(shareIntent, "Choose your share app!"));
+        try {
+            f.createNewFile(); // create the file
+        } catch (IOException e) {
+            // file creation fails for whatever reason
+            displayDialog(R.string.error_file_open);
+            e.printStackTrace();
         }
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG, 0, bos);
+        byte[] bitmapdata = bos.toByteArray();
+
+        try {
+            FileOutputStream fos = new FileOutputStream(f);
+            fos.write(bitmapdata);
+            fos.flush();
+            fos.close();
+        } catch (IOException e) {
+            // catchs error thrown when problem with file IO
+            e.printStackTrace();
+        }
+
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(f));
+        shareIntent.setType("image/png");
+        startActivity(Intent.createChooser(shareIntent, "Choose your share app!"));
+    }
+
+    protected void shareText(){
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT,renderView.getText());
+        shareIntent.setType("text/plain");
+        startActivity(Intent.createChooser(shareIntent, "Choose your share app!"));
     }
 
     protected void displayDialog(int errorMessage) {

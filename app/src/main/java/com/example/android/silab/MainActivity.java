@@ -246,11 +246,9 @@ public class MainActivity extends Activity {
                     emojisedString = emojisedString + "\n"; //'new line' character
                 }
                 // 'new line' for between characters, except for last character
-                if (i != input.length - 1) {
-                    emojisedString = emojisedString + "\n";
-                } else {
-                    displayDialog(R.string.error_no_map);
-                }
+                if (i != input.length - 1) emojisedString = emojisedString + "\n";
+            } else {
+                displayDialog(R.string.error_no_map);
             }
        }
         // return emojified string

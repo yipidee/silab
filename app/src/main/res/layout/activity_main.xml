@@ -25,6 +25,13 @@
 
     </ScrollView>
 
+    <TextView
+        android:id="@+id/pattern_display"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="32sp"
+        android:onClick="openInput"/>
+
     <EditText
         android:id="@+id/user_text"
         android:layout_width="match_parent"

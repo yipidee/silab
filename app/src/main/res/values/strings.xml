@@ -3,6 +3,7 @@
     <string name="hello_world">This is where character will be rendered</string>
     <string name="action_settings">Settings</string>
     <string name="emoji_selection_title">Choose your emoji!</string>
+    <string name="emoji_string_textview">Input you\'re emoji</string>
     <string name="string_input_title">Input your message!</string>
     <string name="button_text">Render!</string>
     <string name="error_no_map">Your message includes characters not yet featured.</string>

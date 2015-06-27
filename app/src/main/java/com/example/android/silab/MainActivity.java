@@ -11,9 +11,7 @@ import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
@@ -30,7 +28,6 @@ import java.util.List;
  *  - sharing image of rendered string
  *
  * To be implemented
- *  - TODO Selecting to send as text or image
  *  - TODO have multiple emoji in one message
  *  - TODO improve emjoi input method (emoji gridlike keyboard?)
  *  - TODO add multiple emoji fonts for image option
@@ -38,9 +35,10 @@ import java.util.List;
  */
 public class MainActivity extends Activity {
 
-    Hashtable<Character, int[][]> charMap;      //global variable for character maps
-    Spinner spinner;                            //global variable for emoji dropdown
-    TextView renderView;                        //global variable for rendered display area
+    private Hashtable<Character, int[][]> charMap;      //global variable for character maps
+    private EmojiInputDialog kb;                   //global variable for emoji dropdown
+    private TextView renderView;                        //global variable for rendered display area
+    private TextView emojiPattern;
 
     Boolean isRendered = false;
 
@@ -53,20 +51,26 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         //Get emoji list from helper
-        List<String> emojiList = sh.getEmojiList();
+        //List<String> emojiList = sh.getEmojiList();
 
         //Create string array adapter for dropdown list (emoji)
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, // current context
-                android.R.layout.simple_spinner_dropdown_item, //default android dropdown
-                emojiList //list of emoji created from Strings
-        );
+        //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, // current context
+        //        android.R.layout.simple_spinner_dropdown_item, //default android dropdown
+        //        emojiList //list of emoji created from Strings
+        //);
         // make the list plain dropdown
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         //get a handle on the emoji selection dropdown
-        spinner = (Spinner) findViewById(R.id.emoji_selector);
+        //spinner = (Spinner) findViewById(R.id.emoji_selector);
         //populate drop down with above adapter
-        spinner.setAdapter(adapter);
+        //spinner.setAdapter(adapter);
+
+        //FragmentManager fm = getFragmentManager();
+        kb = new EmojiInputDialog();
+
+        emojiPattern = (TextView)findViewById(R.id.pattern_display);
+        emojiPattern.setText(getString(R.string.emoji_string_textview));
 
         // character map hashtable from helper
         charMap = sh.getCharMap();
@@ -221,8 +225,11 @@ public class MainActivity extends Activity {
     }
 
     protected String makeEmojisedString(char[] input) {
+
+        int count = 0; //index for emoji pattern
+
         String space = " ";  // simple ASCII space
-        String selectedEmoji = (String) spinner.getSelectedItem(); // store selected emoji
+        List<String> selectedEmoji = kb.getEmojiPattern();//(String) spinner.getSelectedItem(); // store selected emoji
 
         //Variable to store emojised string
         String emojisedString = "";
@@ -242,12 +249,13 @@ public class MainActivity extends Activity {
                 //This is what turns the map into the emoji based string.(as long as there's a map)
                 for (int m = 0; m < map.length; m++) {
                     for (int n = 0; n < map[m].length; n++) {
-                        switch (map[m][n]) {
+                       switch (map[m][n]) {
                             case (0):
                                 emojisedString = emojisedString + space;
                                 break;
                             case (1):
-                                emojisedString = emojisedString + selectedEmoji;
+                                emojisedString = emojisedString + selectedEmoji.get(count%selectedEmoji.size());
+                                count++;
                                 break;
                         }
                     }
@@ -261,5 +269,9 @@ public class MainActivity extends Activity {
         }
         // return emojified string
         return emojisedString;
+    }
+
+    public void openInput(View v){
+        kb.show(getFragmentManager(),"test");
     }
 }

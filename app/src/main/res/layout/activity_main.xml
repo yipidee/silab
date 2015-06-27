@@ -6,7 +6,7 @@
     android:background="#F00FAA"
     tools:context=".MainActivity">
 
-   <ScrollView
+    <ScrollView
        android:layout_width="match_parent"
        android:layout_height="0dp"
        android:layout_weight="1"
@@ -24,20 +24,6 @@
             android:layout_gravity="center_horizontal"/>
 
     </ScrollView>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="12dp"
-        android:text="@string/emoji_selection_title"
-        android:textSize="32sp"
-        android:textColor="#033D80"/>
-
-    <Spinner
-        android:id="@+id/emoji_selector"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="12dp"/>
 
     <EditText
         android:id="@+id/user_text"

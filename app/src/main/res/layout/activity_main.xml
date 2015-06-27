@@ -29,7 +29,8 @@
         android:id="@+id/pattern_display"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="32sp"
+        android:textSize="24sp"
+        android:paddingLeft="12dp"
         android:onClick="openInput"/>
 
     <EditText

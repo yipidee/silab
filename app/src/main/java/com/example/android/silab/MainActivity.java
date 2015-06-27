@@ -28,8 +28,6 @@ import java.util.List;
  *  - sharing image of rendered string
  *
  * To be implemented
- *  - TODO have multiple emoji in one message
- *  - TODO improve emjoi input method (emoji gridlike keyboard?)
  *  - TODO add multiple emoji fonts for image option
  *
  */
@@ -49,22 +47,6 @@ public class MainActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //Get emoji list from helper
-        //List<String> emojiList = sh.getEmojiList();
-
-        //Create string array adapter for dropdown list (emoji)
-        //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, // current context
-        //        android.R.layout.simple_spinner_dropdown_item, //default android dropdown
-        //        emojiList //list of emoji created from Strings
-        //);
-        // make the list plain dropdown
-        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        //get a handle on the emoji selection dropdown
-        //spinner = (Spinner) findViewById(R.id.emoji_selector);
-        //populate drop down with above adapter
-        //spinner.setAdapter(adapter);
 
         //FragmentManager fm = getFragmentManager();
         kb = new EmojiInputDialog();

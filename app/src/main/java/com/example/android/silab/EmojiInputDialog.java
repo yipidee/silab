@@ -1,10 +1,14 @@
 package com.example.android.silab;
 
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -31,6 +35,9 @@ public class EmojiInputDialog extends DialogFragment {
     List<String> emojiPattern;
     TextView tv;
 
+    float dpwidth;
+    float dpheight;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +46,34 @@ public class EmojiInputDialog extends DialogFragment {
                 android.R.layout.simple_list_item_1,
                 emojiString);
         emojiPattern = new ArrayList<String>();
+
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+
+        display.getMetrics(outMetrics);
+
+        float density = getResources().getDisplayMetrics().density;
+        dpwidth = outMetrics.widthPixels / density;
+        dpwidth = (dpwidth-10)*density;
+        dpheight = outMetrics.heightPixels / density;
+        dpheight = (dpheight/(float)2.2) * density;
+    }
+
+
+    // Over ride this method purely to remove title bar from dialog
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState){
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+
+        // Removing the unused title bar space from the dialog window
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getDialog().getWindow().setLayout((int)dpwidth,(int)dpheight);
     }
 
     @Override

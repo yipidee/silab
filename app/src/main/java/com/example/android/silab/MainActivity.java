@@ -182,12 +182,14 @@ public class MainActivity extends Activity {
         startActivity(Intent.createChooser(shareIntent, "Choose your share app!"));
     }
 
+    // share as text with WhatsApp
     protected void shareText(){
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT,renderView.getText());
+        shareIntent.putExtra(Intent.EXTRA_TEXT,renderView.getText().toString());
         shareIntent.setType("text/plain");
-        startActivity(Intent.createChooser(shareIntent, "Choose your share app!"));
+        shareIntent.setPackage("com.whatsapp");
+        startActivity(shareIntent);
     }
 
     protected void displayDialog(int errorMessage) {

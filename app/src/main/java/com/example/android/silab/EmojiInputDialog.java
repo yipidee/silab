@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +36,8 @@ public class EmojiInputDialog extends DialogFragment {
     List<String> emojiPattern;
     TextView tv;
 
-    float dpwidth;
-    float dpheight;
+    float diaWidth;
+    float diaHeight;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,10 +54,10 @@ public class EmojiInputDialog extends DialogFragment {
         display.getMetrics(outMetrics);
 
         float density = getResources().getDisplayMetrics().density;
-        dpwidth = outMetrics.widthPixels / density;
-        dpwidth = (dpwidth-10)*density;
-        dpheight = outMetrics.heightPixels / density;
-        dpheight = (dpheight/(float)2.2) * density;
+        diaWidth = outMetrics.widthPixels / density;
+        diaWidth = (diaWidth -6)*density;
+        diaHeight = outMetrics.heightPixels / density;
+        diaHeight = (diaHeight /(float)2.2) * density;
     }
 
 
@@ -73,7 +74,7 @@ public class EmojiInputDialog extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getDialog().getWindow().setLayout((int)dpwidth,(int)dpheight);
+        getDialog().getWindow().setLayout((int) diaWidth,(int) diaHeight);
     }
 
     @Override
@@ -83,6 +84,7 @@ public class EmojiInputDialog extends DialogFragment {
 
         GridView gv = (GridView)v.findViewById(R.id.emoji_keyboard);
         gv.setNumColumns(5);
+        gv.setGravity(Gravity.CENTER);
         gv.setAdapter(adapter);
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

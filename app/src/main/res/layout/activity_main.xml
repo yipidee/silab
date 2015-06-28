@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F00FAA"
     tools:context=".MainActivity">
 
     <ScrollView
@@ -46,10 +45,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:background="#1289CD"
-        android:text="@string/button_text"
+        android:text="@string/button_render_text"
         android:textSize="32sp"
-        android:textColor="#DC9821"
         android:onClick="render"/>
 
 </LinearLayout>

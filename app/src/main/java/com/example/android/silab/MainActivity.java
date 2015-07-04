@@ -214,8 +214,8 @@ public class MainActivity extends Activity {
 
         int count = 0; //index for emoji pattern
 
-        String space = " ";  // simple ASCII space
-        List<String> selectedEmoji = kb.getEmojiPattern();//(String) spinner.getSelectedItem(); // store selected emoji
+        String space = "\u2004";  // unicode space
+        List<String> selectedEmoji = kb.getEmojiPattern(); // store selected emoji
 
         //Variable to store emojised string
         String emojisedString = "";

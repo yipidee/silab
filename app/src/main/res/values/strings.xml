@@ -11,6 +11,7 @@
     <string name="error_no_map">Your message includes characters not yet featured.</string>
     <string name="error_no_input">Please confirm that you\'ve input a message.</string>
     <string name="error_file_open">Can\'t seem to open a file, so, um, that suck\'s</string>
+    <string name="error_no_emoji_chosen">Please select your emoji first.</string>
     <string name="button_ok">OK</string>
     <string name="button_string">Text</string>
     <string name="button_image">Image</string>

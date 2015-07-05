@@ -88,26 +88,33 @@ public class MainActivity extends Activity {
          * and renders the character using the emoji.
          */
 
+        //handle to the render view
+        renderView = (TextView) findViewById(R.id.render_textview);
+        renderView.setDrawingCacheEnabled(true);
+
         //Variables to contain user input and output
         String emojified = "";
 
         //handle to the user input
-
         EditText userInput = (EditText) findViewById(R.id.user_text);
-
         String userString = userInput.getText().toString();
-        userString = userString.toUpperCase();
 
-        char[] userCharArray = userString.toCharArray();
+        if(emojiPattern.getText().equals(getString(R.string.emoji_string_textview))){
+            displayDialog(R.string.error_no_emoji_chosen);
+        }else {
+            userString = userString.toUpperCase();
 
-        if (userCharArray.length != 0) { //check for no user input
-            emojified = makeEmojisedString(userCharArray);
-        } else {
-            displayDialog(R.string.error_no_input);
+            char[] userCharArray = userString.toCharArray();
+
+            if (userCharArray.length != 0) { //check for no user input
+                emojified = makeEmojisedString(userCharArray, kb.getEmojiPattern());
+            } else {
+                displayDialog(R.string.error_no_input);
+            }
+            // render text to view
+            renderView.setText(emojified);
+            isRendered = true;
         }
-        // render text to view
-        renderView.setText(emojified);
-        isRendered = true;
     }
 
     // Share function
@@ -210,19 +217,14 @@ public class MainActivity extends Activity {
         return charMap.containsKey(key);
     }
 
-    protected String makeEmojisedString(char[] input) {
+    protected String makeEmojisedString(char[] input, List<String> selectedEmoji) {
 
         int count = 0; //index for emoji pattern
 
         String space = "\u2004";  // unicode space
-        List<String> selectedEmoji = kb.getEmojiPattern(); // store selected emoji
 
         //Variable to store emojised string
         String emojisedString = "";
-
-        //handle to the render view
-        renderView = (TextView) findViewById(R.id.render_textview);
-        renderView.setDrawingCacheEnabled(true);
 
         for (int i = 0; i < input.length; i++) {
 

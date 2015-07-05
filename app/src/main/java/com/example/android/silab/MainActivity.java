@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -34,9 +35,10 @@ import java.util.List;
 public class MainActivity extends Activity {
 
     private Hashtable<Character, int[][]> charMap;      //global variable for character maps
-    private EmojiInputDialog kb;                   //global variable for emoji dropdown
+    private EmojiInputDialog kb;                        //global variable for emoji dropdown
     private TextView renderView;                        //global variable for rendered display area
     private TextView emojiPattern;
+    private Typeface mFont;                             //WhatsApp-like emoji set
 
     Boolean isRendered = false;
 
@@ -44,6 +46,9 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
 
         SilabHelper sh = new SilabHelper();         //helper for list and map creation
+
+        // load custom font from assets
+        mFont = Typeface.createFromAsset(getAssets(),"fonts/NotoColorEmoji.ttf");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -53,6 +58,7 @@ public class MainActivity extends Activity {
 
         emojiPattern = (TextView)findViewById(R.id.pattern_display);
         emojiPattern.setText(getString(R.string.emoji_string_textview));
+        emojiPattern.setTypeface(mFont);
 
         // character map hashtable from helper
         charMap = sh.getCharMap();
@@ -91,6 +97,7 @@ public class MainActivity extends Activity {
         //handle to the render view
         renderView = (TextView) findViewById(R.id.render_textview);
         renderView.setDrawingCacheEnabled(true);
+        renderView.setTypeface(mFont);
 
         //Variables to contain user input and output
         String emojified = "";

@@ -121,7 +121,7 @@ public class MainActivity extends Activity {
     // Presents user with option to share text or image
     public void share(View v){
         if(isRendered) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(R.string.message_share);
             builder.setPositiveButton(R.string.button_string, new DialogInterface.OnClickListener() {
                 @Override
@@ -137,7 +137,10 @@ public class MainActivity extends Activity {
             });
             
             AlertDialog dialog = builder.create();
-            dialog.show();
+            dialog.show();*/
+
+            //Image sharing is disabled, text sharing in whatsapp is automatic
+            shareText();
         }
     }
 

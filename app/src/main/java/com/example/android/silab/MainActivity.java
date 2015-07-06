@@ -231,7 +231,7 @@ public class MainActivity extends Activity {
 
         int count = 0; //index for emoji pattern
 
-        String space = "\u2004";  // unicode space
+        String space = "\u2003";  // unicode space
 
         //Variable to store emojised string
         String emojisedString = "";

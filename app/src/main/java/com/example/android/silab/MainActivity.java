@@ -229,8 +229,6 @@ public class MainActivity extends Activity {
 
     protected String makeEmojisedString(char[] input, List<String> selectedEmoji) {
 
-        int count = 0; //index for emoji pattern
-
         String space = "\u205F\u202F";  // unicode space
 
         //Variable to store emojised string
@@ -245,6 +243,7 @@ public class MainActivity extends Activity {
                 int[][] map = charMap.get(mapToUse);  //The map for the input character
 
                 //This is what turns the map into the emoji based string.(as long as there's a map)
+                int count = 0; //index for emoji pattern
                 for (int m = 0; m < map.length; m++) {
                     for (int n = 0; n < map[m].length; n++) {
                        switch (map[m][n]) {

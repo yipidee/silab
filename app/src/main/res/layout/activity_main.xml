@@ -30,6 +30,7 @@
         android:layout_height="wrap_content"
         android:textSize="24sp"
         android:paddingLeft="12dp"
+        android:clickable="true"
         android:onClick="openInput"/>
 
     <EditText

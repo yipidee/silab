@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -38,7 +37,7 @@ public class MainActivity extends Activity {
     private EmojiInputDialog kb;                        //global variable for emoji dropdown
     private TextView renderView;                        //global variable for rendered display area
     private TextView emojiPattern;
-    private Typeface mFont;                             //WhatsApp-like emoji set
+    //private Typeface mFont;                             //WhatsApp-like emoji set
 
     Boolean isRendered = false;
 
@@ -48,7 +47,7 @@ public class MainActivity extends Activity {
         SilabHelper sh = new SilabHelper();         //helper for list and map creation
 
         // load custom font from assets
-        mFont = Typeface.createFromAsset(getAssets(),"fonts/NotoColorEmoji.ttf");
+        //mFont = Typeface.createFromAsset(getAssets(),"fonts/NotoColorEmoji.ttf");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -58,7 +57,7 @@ public class MainActivity extends Activity {
 
         emojiPattern = (TextView)findViewById(R.id.pattern_display);
         emojiPattern.setText(getString(R.string.emoji_string_textview));
-        emojiPattern.setTypeface(mFont);
+        //emojiPattern.setTypeface(mFont);
 
         // character map hashtable from helper
         charMap = sh.getCharMap();
@@ -97,7 +96,7 @@ public class MainActivity extends Activity {
         //handle to the render view
         renderView = (TextView) findViewById(R.id.render_textview);
         renderView.setDrawingCacheEnabled(true);
-        renderView.setTypeface(mFont);
+        //renderView.setTypeface(mFont);
 
         //Variables to contain user input and output
         String emojified = "";
@@ -205,8 +204,9 @@ public class MainActivity extends Activity {
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_TEXT,renderView.getText().toString());
         shareIntent.setType("text/plain");
-        shareIntent.setPackage("com.whatsapp");
-        startActivity(shareIntent);
+        startActivity(Intent.createChooser(shareIntent, "Choose your share app!"));
+        //shareIntent.setPackage("com.whatsapp");
+        //startActivity(shareIntent);
     }
 
     protected void displayDialog(int errorMessage) {

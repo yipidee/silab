@@ -42,18 +42,18 @@ public class MainActivity extends Activity {
     private TextView emojiPattern;
     private Typeface mFont;                             //WhatsApp-like emoji set
 
-    Boolean isRendered = false;
+    private Boolean isRendered = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         SilabHelper sh = new SilabHelper();         //helper for list and map creation
 
         // load custom font from assets
         setCustomTypeface();
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         //FragmentManager fm = getFragmentManager();
         kb = new EmojiInputDialog();
@@ -106,7 +106,6 @@ public class MainActivity extends Activity {
 
         //handle to the render view
         renderView = (TextView) findViewById(R.id.render_textview);
-        //TODO: delete this line renderView.setDrawingCacheEnabled(true);
         renderView.setTypeface(mFont);
 
         //Variables to contain user input and output

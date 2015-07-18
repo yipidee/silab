@@ -2,6 +2,7 @@ package com.example.android.silab;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -204,9 +205,13 @@ public class MainActivity extends Activity {
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_TEXT,renderView.getText().toString());
         shareIntent.setType("text/plain");
-        startActivity(Intent.createChooser(shareIntent, "Choose your share app!"));
-        //shareIntent.setPackage("com.whatsapp");
-        //startActivity(shareIntent);
+        try{
+            shareIntent.setPackage("com.whatsapp");
+            startActivity(shareIntent);
+        }catch(ActivityNotFoundException e){
+            shareIntent.setPackage(null);
+            startActivity(Intent.createChooser(shareIntent, "Choose your share app!"));
+        }
     }
 
     protected void displayDialog(int errorMessage) {

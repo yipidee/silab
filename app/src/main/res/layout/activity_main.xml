@@ -28,7 +28,7 @@
         android:id="@+id/pattern_display"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
+        android:textSize="32sp"
         android:paddingLeft="12dp"
         android:clickable="true"
         android:onClick="openInput"/>

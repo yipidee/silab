@@ -2,11 +2,13 @@ package com.example.android.silab;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
@@ -48,7 +50,7 @@ public class MainActivity extends Activity {
         SilabHelper sh = new SilabHelper();         //helper for list and map creation
 
         // load custom font from assets
-        mFont = Typeface.createFromAsset(getAssets(),"fonts/NotoColorEmoji.ttf");
+        setCustomTypeface();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -88,6 +90,14 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    protected void setCustomTypeface(){
+        if(Build.VERSION.SDK_INT>=19) { //If greater than KitKat use cutsom font
+            mFont = Typeface.createFromAsset(getAssets(), "fonts/NotoColorEmoji.ttf");
+        }else{ //else use deafult font
+            mFont = Typeface.DEFAULT;
+        }
+    }
+
     // Function that creates emojified string
     public void render(View v) {
         /* This is where the magic happens. Takes user string and selected emoji
@@ -96,7 +106,7 @@ public class MainActivity extends Activity {
 
         //handle to the render view
         renderView = (TextView) findViewById(R.id.render_textview);
-        renderView.setDrawingCacheEnabled(true);
+        //TODO: delete this line renderView.setDrawingCacheEnabled(true);
         renderView.setTypeface(mFont);
 
         //Variables to contain user input and output
@@ -205,8 +215,13 @@ public class MainActivity extends Activity {
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_TEXT,renderView.getText().toString());
         shareIntent.setType("text/plain");
-        shareIntent.setPackage("com.whatsapp");
-        startActivity(shareIntent);
+        try{
+            shareIntent.setPackage("com.whatsapp");
+            startActivity(shareIntent);
+        }catch(ActivityNotFoundException e){
+            shareIntent.setPackage(null);
+            startActivity(Intent.createChooser(shareIntent, "Choose your share app!"));
+        }
     }
 
     protected void displayDialog(int errorMessage) {

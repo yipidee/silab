@@ -5,22 +5,16 @@ import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -137,88 +131,22 @@ public class MainActivity extends Activity {
     // Presents user with option to share text or image
     public void share(View v){
         if(isRendered) {
-            /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(R.string.message_share);
-            builder.setPositiveButton(R.string.button_string, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    shareText();
-                }
-            });
-            builder.setNegativeButton(R.string.button_image, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    shareImage();
-                }
-            });
-            
-            AlertDialog dialog = builder.create();
-            dialog.show();*/
-
-            //Image sharing is disabled, text sharing in whatsapp is automatic
-            shareText();
+           shareText();
         }
-    }
-
-    // Function that creates and shares images of emojified string
-    protected void shareImage() {
-        /* Bare bones intent to send renderView as image.
-         * Tested with:
-         *   Hangouts:  OK
-         *   gmail:     OK (cropped)
-         *   Facebook:
-         *   FB mess:   OK
-         *   Line:      OK
-         *   WA:        OK (cropped)
-         */
-
-        // Create bitmap
-        Bitmap bm = Bitmap.createBitmap(renderView.getDrawingCache());
-
-        // file to store PNG image of renderView content
-        // this is only a file object, it doesn't create a file on disc
-        File f = new File(Environment.getExternalStorageDirectory() + File.separator, "tmp_emojified.png");
-
-        try {
-            f.createNewFile(); // create the file
-        } catch (IOException e) {
-            // file creation fails for whatever reason
-            displayDialog(R.string.error_file_open);
-            e.printStackTrace();
-       }
-
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG, 0, bos);
-        byte[] bitmapdata = bos.toByteArray();
-
-        try {
-            FileOutputStream fos = new FileOutputStream(f);
-            fos.write(bitmapdata);
-            fos.flush();
-            fos.close();
-        } catch (IOException e) {
-            // catchs error thrown when problem with file IO
-            e.printStackTrace();
-        }
-
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(f));
-        shareIntent.setType("image/png");
-        startActivity(Intent.createChooser(shareIntent, "Choose your share app!"));
     }
 
     // share as text with WhatsApp
     protected void shareText(){
         Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT,renderView.getText().toString());
-        shareIntent.setType("text/plain");
         try{
-            shareIntent.setPackage("com.whatsapp");
+            Uri urluri = Uri.parse("whatsapp://send?text="+renderView.getText().toString()+"");
+            shareIntent.setAction(Intent.ACTION_VIEW);
+            shareIntent.setData(urluri);
             startActivity(shareIntent);
         }catch(ActivityNotFoundException e){
-            shareIntent.setPackage(null);
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_TEXT,renderView.getText().toString());
+            shareIntent.setType("text/plain");
             startActivity(Intent.createChooser(shareIntent, "Choose your share app!"));
         }
     }

@@ -42,12 +42,29 @@
         android:textSize="32sp"
         android:paddingLeft="12dp" />
 
-    <Button
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="@string/button_render_text"
-        android:textSize="32sp"
-        android:onClick="render"/>
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/button_render_text"
+            android:textSize="32sp"
+            android:onClick="render"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Share!"
+            android:textSize="32sp"
+            android:onClick="share"/>
+
+    </LinearLayout>
 
 </LinearLayout>

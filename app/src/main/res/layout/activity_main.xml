@@ -18,7 +18,7 @@
             android:background="#FFFFFFFF"
             android:text="@string/hello_world"
             android:textSize="16sp"
-            android:textIsSelectable="true"
+            android:textIsSelectable="false"
             android:onClick="share"
             android:layout_gravity="center_horizontal"/>
 

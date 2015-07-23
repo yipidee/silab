@@ -83,6 +83,7 @@ public class EmojiInputDialog extends DialogFragment {
         View v = inflater.inflate(R.layout.emoji_input, container, false);
 
         GridView gv = (GridView)v.findViewById(R.id.emoji_keyboard);
+        //TODO: set columns based on screen width
         gv.setNumColumns(5);
         gv.setGravity(Gravity.CENTER);
         gv.setAdapter(adapter);

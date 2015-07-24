@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -34,9 +35,7 @@ public class MainActivity extends Activity {
     private EmojiInputDialog kb;                        //global variable for emoji dropdown
     private TextView renderView;                        //global variable for rendered display area
     private TextView emojiPattern;
-    private Typeface mFont;                             //WhatsApp-like emoji set
-
-    private Boolean isRendered = false;
+    static private Typeface mFont;                      //WhatsApp-like emoji set
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +57,10 @@ public class MainActivity extends Activity {
 
         // character map hashtable from helper
         charMap = sh.getCharMap();
+    }
+
+    public static Typeface getFont(){
+        return mFont;
     }
 
     // this is automatically created, didn't touch this function
@@ -123,17 +126,15 @@ public class MainActivity extends Activity {
             }
             // render text to view
             renderView.setText(emojified);
-            isRendered = true;
+
+            //enable share button
+            Button share = (Button)findViewById(R.id.share_button);
+            share.setEnabled(true);
         }
     }
 
     // Share function
-    // Presents user with option to share text or image
-    public void share(View v){
-        if(isRendered) {
-           shareText();
-        }
-    }
+    public void share(View v){shareText();}
 
     // share as text with WhatsApp
     protected void shareText(){

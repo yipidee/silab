@@ -57,12 +57,14 @@
             android:onClick="render"/>
 
         <Button
+            android:id="@+id/share_button"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:text="Share!"
+            android:text="@string/button_share_text"
             android:textSize="32sp"
+            android:enabled="false"
             android:onClick="share"/>
 
     </LinearLayout>

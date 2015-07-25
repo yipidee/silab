@@ -1,9 +1,7 @@
 package com.example.android.silab;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -15,9 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import java.util.Hashtable;
-import java.util.List;
 
 /* The main activity for silab, renders layout, gets input, sets output etc.
  *
@@ -31,11 +26,12 @@ import java.util.List;
  */
 public class MainActivity extends Activity {
 
-    private Hashtable<Character, int[][]> charMap;      //global variable for character maps
+//    private Hashtable<Character, int[][]> charMap;      //global variable for character maps
     private EmojiInputDialog kb;                        //global variable for emoji dropdown
     private TextView renderView;                        //global variable for rendered display area
     private TextView emojiPattern;
-    static private Typeface mFont;                      //WhatsApp-like emoji set
+    private static DialogDisplayer dd;
+    private static Typeface mFont;                      //WhatsApp-like emoji set
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +40,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         SilabHelper sh = new SilabHelper();         //helper for list and map creation
+
+        // Instantiate dialog displayer helper for this activity
+        dd = new DialogDisplayer(this);
 
         // load custom font from assets
         setCustomTypeface();
@@ -54,13 +53,6 @@ public class MainActivity extends Activity {
         emojiPattern = (TextView)findViewById(R.id.pattern_display);
         emojiPattern.setText(getString(R.string.emoji_string_textview));
         emojiPattern.setTypeface(mFont);
-
-        // character map hashtable from helper
-        charMap = sh.getCharMap();
-    }
-
-    public static Typeface getFont(){
-        return mFont;
     }
 
     // this is automatically created, didn't touch this function
@@ -88,9 +80,9 @@ public class MainActivity extends Activity {
     }
 
     protected void setCustomTypeface(){
-        if(Build.VERSION.SDK_INT>=19) { //If greater than KitKat use cutsom font
+        if(Build.VERSION.SDK_INT>=19) { //If greater than KitKat use custom font
             mFont = Typeface.createFromAsset(getAssets(), "fonts/NotoColorEmoji.ttf");
-        }else{ //else use deafult font
+        }else{ //else use default font
             mFont = Typeface.DEFAULT;
         }
     }
@@ -105,7 +97,10 @@ public class MainActivity extends Activity {
         renderView = (TextView) findViewById(R.id.render_textview);
         renderView.setTypeface(mFont);
 
-        //Variables to contain user input and output
+        // reference to share button
+        Button share = (Button)findViewById(R.id.share_button);
+
+        //variable to hold emojified string
         String emojified = "";
 
         //handle to the user input
@@ -113,31 +108,26 @@ public class MainActivity extends Activity {
         String userString = userInput.getText().toString();
 
         if(emojiPattern.getText().equals(getString(R.string.emoji_string_textview))){
-            displayDialog(R.string.error_no_emoji_chosen);
+            dd.displayDialog(R.string.error_no_emoji_chosen);
         }else {
-            userString = userString.toUpperCase();
 
-            char[] userCharArray = userString.toCharArray();
+            if (!userString.equals("")) { //check for no user input
+                emojified = Emojifier.emojify(userString, kb.getEmojiPattern());
 
-            if (userCharArray.length != 0) { //check for no user input
-                emojified = makeEmojisedString(userCharArray, kb.getEmojiPattern());
+                // render text to view
+                renderView.setText(emojified);
+
+                //enable share button
+                share.setEnabled(true);
             } else {
-                displayDialog(R.string.error_no_input);
+                share.setEnabled(false);
+                dd.displayDialog(R.string.error_no_input);
             }
-            // render text to view
-            renderView.setText(emojified);
-
-            //enable share button
-            Button share = (Button)findViewById(R.id.share_button);
-            share.setEnabled(true);
         }
     }
 
-    // Share function
-    public void share(View v){shareText();}
-
-    // share as text with WhatsApp
-    protected void shareText(){
+    // share as text with WhatsApp, prompt other apps if WhatsApp not installed
+    public void shareText(View v){
         Intent shareIntent = new Intent();
         try{
             Uri urluri = Uri.parse("whatsapp://send?text="+renderView.getText().toString()+"");
@@ -152,66 +142,15 @@ public class MainActivity extends Activity {
         }
     }
 
-    protected void displayDialog(int errorMessage) {
-        // Displays a error dialog, with an ok button to close
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(errorMessage);
-        builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Do nothing? Just let the dialog close and get garbage collected
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    protected Boolean mapExists(char key) {
-        return charMap.containsKey(key);
-    }
-
-    protected String makeEmojisedString(char[] input, List<String> selectedEmoji) {
-
-        String space = "\u205F\u202F";  // unicode space
-
-        //Variable to store emojised string
-        String emojisedString = "";
-
-        for (int i = 0; i < input.length; i++) {
-
-            char mapToUse = input[i];  // Get each character in order
-
-            if (mapExists(mapToUse)) { //check if there is a map for this character
-
-                int[][] map = charMap.get(mapToUse);  //The map for the input character
-
-                //This is what turns the map into the emoji based string.(as long as there's a map)
-                int count = 0; //index for emoji pattern
-                for (int m = 0; m < map.length; m++) {
-                    for (int n = 0; n < map[m].length; n++) {
-                       switch (map[m][n]) {
-                            case (0):
-                                emojisedString = emojisedString + space;
-                                break;
-                            case (1):
-                                emojisedString = emojisedString + selectedEmoji.get(count%selectedEmoji.size());
-                                count++;
-                                break;
-                        }
-                    }
-                    emojisedString = emojisedString + "\n"; //'new line' character
-                }
-                // 'new line' for between characters, except for last character
-                if (i != input.length - 1) emojisedString = emojisedString + "\n";
-            } else {
-                displayDialog(R.string.error_no_map);
-            }
-       }
-        // return emojified string
-        return emojisedString;
-    }
-
     public void openInput(View v){
-        kb.show(getFragmentManager(),"test");
+        kb.show(getFragmentManager(),"emojiinput");
+    }
+
+    public static DialogDisplayer getDD(){
+        return dd;
+    }
+
+    public static Typeface getFont(){
+        return mFont;
     }
 }

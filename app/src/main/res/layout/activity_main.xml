@@ -15,12 +15,11 @@
             android:id="@+id/render_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:background="#FFFFFFFF"
             android:text="@string/hello_world"
-            android:textSize="16sp"
             android:textIsSelectable="false"
-            android:onClick="share"
-            android:layout_gravity="center_horizontal"/>
+            android:textSize="16sp"/>
 
     </ScrollView>
 
@@ -28,10 +27,10 @@
         android:id="@+id/pattern_display"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="32sp"
-        android:paddingLeft="12dp"
         android:clickable="true"
-        android:onClick="openInput"/>
+        android:onClick="openInput"
+        android:paddingLeft="12dp"
+        android:textSize="32sp"/>
 
     <EditText
         android:id="@+id/user_text"
@@ -39,33 +38,35 @@
         android:layout_height="wrap_content"
         android:hint="@string/string_input_title"
         android:inputType="text"
-        android:textSize="32sp"
-        android:paddingLeft="12dp" />
+        android:paddingLeft="12dp"
+        android:textSize="32sp" />
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <Button
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="render"
             android:padding="8dp"
             android:text="@string/button_render_text"
-            android:textSize="32sp"
-            android:onClick="render"/>
+            android:textAllCaps="false"
+            android:textSize="32sp"/>
 
         <Button
             android:id="@+id/share_button"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:enabled="false"
+            android:onClick="shareText"
             android:padding="8dp"
             android:text="@string/button_share_text"
-            android:textSize="32sp"
-            android:enabled="false"
-            android:onClick="share"/>
+            android:textAllCaps="false"
+            android:textSize="32sp"/>
 
     </LinearLayout>
 

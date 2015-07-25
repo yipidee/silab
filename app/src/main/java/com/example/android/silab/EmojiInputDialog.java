@@ -32,9 +32,9 @@ import java.util.List;
 
 public class EmojiInputDialog extends DialogFragment {
 
-    ArrayAdapter<String> adapter;
-    List<String> emojiPattern;
-    TextView tv;
+    private ArrayAdapter<String> adapter;
+    private List<String> emojiPattern;
+    private TextView tv;
 
     float diaWidth;
     float diaHeight;
@@ -47,6 +47,7 @@ public class EmojiInputDialog extends DialogFragment {
                 android.R.layout.simple_list_item_1,
                 emojiString);
         emojiPattern = new ArrayList<String>();
+
 
         Display display = getActivity().getWindowManager().getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics();
@@ -116,6 +117,7 @@ public class EmojiInputDialog extends DialogFragment {
         });
 
         tv = (TextView)v.findViewById(R.id.emoji_string_text);
+        tv.setTypeface(MainActivity.getFont());
 
         return v;
     }

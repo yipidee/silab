@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,12 +43,11 @@ public class EmojiInputDialog extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        List<String> emojiString = new SilabHelper().getEmojiList();
-        adapter = new ArrayAdapter<String>(getActivity(),
+        List<String> emojiString = Emoji.getEmojiList();
+        adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1,
                 emojiString);
         emojiPattern = new ArrayList<String>();
-
 
         Display display = getActivity().getWindowManager().getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics();
@@ -60,7 +60,6 @@ public class EmojiInputDialog extends DialogFragment {
         diaHeight = outMetrics.heightPixels / density;
         diaHeight = (diaHeight /(float)2.2) * density;
     }
-
 
     // Over ride this method purely to remove title bar from dialog
     @Override
@@ -141,5 +140,209 @@ public class EmojiInputDialog extends DialogFragment {
 
     public List<String> getEmojiPattern(){
         return emojiPattern;
+    }
+
+    private static class Emoji{
+
+        // This is an array of byte arrays. Each byte array can transformed into an emoji
+        // the (byte) cast is needed because byte is unsigned in java... ugly ugly ugly
+        private final static byte[][] byteArray = {
+                // Emoticons (smilies)
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x81},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x82},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x83},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x84},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x85},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x86},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x89},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x8A},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x8B},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x8C},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x8D},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x8F},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x92},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x93},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x94},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x98},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x9A},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x9C},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x9D},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x9E},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xA0},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xA1},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xA2},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xA3},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xA4},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xA5},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xA8},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xA9},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xAA},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xAB},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xAD},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xB0},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xB1},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xB2},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xB3},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xB5},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xB7},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xB8},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xB9},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xBA},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xBB},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xBC},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xBE},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xBF},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x99,(byte)0x80},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x99,(byte)0x85},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x99,(byte)0x86},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x99,(byte)0x87},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x99,(byte)0x88},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x99,(byte)0x89},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x99,(byte)0x8A},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x99,(byte)0x8B},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x99,(byte)0x8C},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x99,(byte)0x8D},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x99,(byte)0x8E},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x99,(byte)0x8F},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x80},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x87},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x88},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x8E},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x90},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x91},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x95},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x97},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x99},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x9B},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0x9F},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xA6},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xA7},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xAC},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xAE},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xAF},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xB4},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x98,(byte)0xB6},
+
+                // Dingbats
+                {(byte)0xE2,(byte)0x9C,(byte)0x82},
+                {(byte)0xE2,(byte)0x9C,(byte)0x85},
+                {(byte)0xE2,(byte)0x9C,(byte)0x88},
+                {(byte)0xE2,(byte)0x9C,(byte)0x89},
+                {(byte)0xE2,(byte)0x9C,(byte)0x8A},
+                {(byte)0xE2,(byte)0x9C,(byte)0x8B},
+                {(byte)0xE2,(byte)0x9C,(byte)0x8C},
+                {(byte)0xE2,(byte)0x9C,(byte)0x8F},
+                {(byte)0xE2,(byte)0x9C,(byte)0x92},
+                {(byte)0xE2,(byte)0x9C,(byte)0x94},
+                {(byte)0xE2,(byte)0x9C,(byte)0x96},
+                {(byte)0xE2,(byte)0x9C,(byte)0xA8},
+                {(byte)0xE2,(byte)0x9C,(byte)0xB3},
+                {(byte)0xE2,(byte)0x9C,(byte)0xB4},
+                {(byte)0xE2,(byte)0x9D,(byte)0x84},
+                {(byte)0xE2,(byte)0x9D,(byte)0x87},
+                {(byte)0xE2,(byte)0x9D,(byte)0x8C},
+                {(byte)0xE2,(byte)0x9D,(byte)0x8E},
+                {(byte)0xE2,(byte)0x9D,(byte)0x93},
+                {(byte)0xE2,(byte)0x9D,(byte)0x94},
+                {(byte)0xE2,(byte)0x9D,(byte)0x95},
+                {(byte)0xE2,(byte)0x9D,(byte)0x97},
+                {(byte)0xE2,(byte)0x9D,(byte)0xA4},
+                {(byte)0xE2,(byte)0x9E,(byte)0x95},
+                {(byte)0xE2,(byte)0x9E,(byte)0x96},
+                {(byte)0xE2,(byte)0x9E,(byte)0x97},
+                {(byte)0xE2,(byte)0x9E,(byte)0xA1},
+                {(byte)0xE2,(byte)0x9E,(byte)0xB0},
+
+                //Transport
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0x80},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0x83},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0x84},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0x85},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0x87},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0x89},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0x8C},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0x8F},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0x91},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0x92},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0x93},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0x95},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0x97},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0x99},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0x9A},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0xA2},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0xA4},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0xA5},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0xA7},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0xA8},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0xA9},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0xAA},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0xAB},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0xAC},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0xAD},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0xB2},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0xB6},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0xB9},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0xBA},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0xBB},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0xBC},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0xBD},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9A,(byte)0xBE},
+                {(byte) 0xF0,(byte)0x9F,(byte)0x9B,(byte)0x80},
+
+                // Enclosed Characters
+                {(byte)0xE2,(byte)0x93,(byte)0x82},
+                {(byte)0xF0,(byte)0x9F,(byte)0x85,(byte)0xB0},
+                {(byte)0xF0,(byte)0x9F,(byte)0x85,(byte)0xB1},
+                {(byte)0xF0,(byte)0x9F,(byte)0x85,(byte)0xBE},
+                {(byte)0xF0,(byte)0x9F,(byte)0x85,(byte)0xBF},
+                {(byte)0xF0,(byte)0x9F,(byte)0x86,(byte)0x8E},
+                {(byte)0xF0,(byte)0x9F,(byte)0x86,(byte)0x91},
+                {(byte)0xF0,(byte)0x9F,(byte)0x86,(byte)0x92},
+                {(byte)0xF0,(byte)0x9F,(byte)0x86,(byte)0x93},
+                {(byte)0xF0,(byte)0x9F,(byte)0x86,(byte)0x94},
+                {(byte)0xF0,(byte)0x9F,(byte)0x86,(byte)0x95},
+                {(byte)0xF0,(byte)0x9F,(byte)0x86,(byte)0x96},
+                {(byte)0xF0,(byte)0x9F,(byte)0x86,(byte)0x97},
+                {(byte)0xF0,(byte)0x9F,(byte)0x86,(byte)0x98},
+                {(byte)0xF0,(byte)0x9F,(byte)0x86,(byte)0x99},
+                {(byte)0xF0,(byte)0x9F,(byte)0x86,(byte)0x9A},
+                // Flags would go here, but Android flags are shit
+                // going to ignore them until improved
+                {(byte)0xF0,(byte)0x9F,(byte)0x88,(byte)0x81},
+                {(byte)0xF0,(byte)0x9F,(byte)0x88,(byte)0x82},
+                {(byte)0xF0,(byte)0x9F,(byte)0x88,(byte)0x9A},
+                {(byte)0xF0,(byte)0x9F,(byte)0x88,(byte)0xAF},
+                {(byte)0xF0,(byte)0x9F,(byte)0x88,(byte)0xB2},
+                {(byte)0xF0,(byte)0x9F,(byte)0x88,(byte)0xB3},
+                {(byte)0xF0,(byte)0x9F,(byte)0x88,(byte)0xB4},
+                {(byte)0xF0,(byte)0x9F,(byte)0x88,(byte)0xB5},
+                {(byte)0xF0,(byte)0x9F,(byte)0x88,(byte)0xB6},
+                {(byte)0xF0,(byte)0x9F,(byte)0x88,(byte)0xB7},
+                {(byte)0xF0,(byte)0x9F,(byte)0x88,(byte)0xB8},
+                {(byte)0xF0,(byte)0x9F,(byte)0x88,(byte)0xB9},
+                {(byte)0xF0,(byte)0x9F,(byte)0x88,(byte)0xBA},
+                {(byte)0xF0,(byte)0x9F,(byte)0x89,(byte)0x90},
+                {(byte)0xF0,(byte)0x9F,(byte)0x89,(byte)0x91}
+        };
+
+        //What will become the list of emoji
+        private static List<String> emojiList = new ArrayList<>();
+
+        //function that creates emoji from byte arrays and adds them to list
+        private static void populateEmojiList(){
+            for(int m=0;m<byteArray.length;m++){
+                try {
+                    emojiList.add(new String(byteArray[m], "UTF-8"));
+                }catch(UnsupportedEncodingException e){
+                    e.printStackTrace(); //have to catch this error, don't actually know what it is
+                }
+            }
+        }
+
+        //the function called by application to get the emoji list
+        public static List<String> getEmojiList() {
+            populateEmojiList();
+            return emojiList;
+        }
     }
 }

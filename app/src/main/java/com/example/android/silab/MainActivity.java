@@ -26,7 +26,6 @@ import android.widget.TextView;
  */
 public class MainActivity extends Activity {
 
-//    private Hashtable<Character, int[][]> charMap;      //global variable for character maps
     private EmojiInputDialog kb;                        //global variable for emoji dropdown
     private TextView renderView;                        //global variable for rendered display area
     private TextView emojiPattern;
@@ -38,8 +37,6 @@ public class MainActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        SilabHelper sh = new SilabHelper();         //helper for list and map creation
 
         // Instantiate dialog displayer helper for this activity
         dd = new DialogDisplayer(this);

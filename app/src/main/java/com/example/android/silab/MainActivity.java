@@ -15,15 +15,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 /* The main activity for silab, renders layout, gets input, sets output etc.
- *
- * Currently implemented
- *  - rendering emoji string
- *  - sharing image of rendered string
- *
- * To be implemented
- *  - TODO add multiple emoji fonts for image option
- *
+
  */
+
 public class MainActivity extends Activity {
 
     private EmojiInputDialog kb;                        //global variable for emoji dropdown
@@ -76,6 +70,7 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Sets font based on Android version
     protected void setCustomTypeface(){
         if(Build.VERSION.SDK_INT>=19) { //If greater than KitKat use custom font
             mFont = Typeface.createFromAsset(getAssets(), "fonts/NotoColorEmoji.ttf");

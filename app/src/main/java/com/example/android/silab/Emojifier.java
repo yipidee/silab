@@ -42,7 +42,6 @@ public class Emojifier {
                                 break;
                             case (1):
                                 emojifiedString = emojifiedString + selectedEmoji.get(count%selectedEmoji.size());
-                                count++;
                                 break;
                         }
                     }

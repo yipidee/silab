@@ -375,6 +375,7 @@ public class EmojiInputDialog extends DialogFragment {
                 {(byte)0xE2,(byte)0x99,(byte)0x91},
                 {(byte)0xE2,(byte)0x99,(byte)0x92},
                 {(byte)0xE2,(byte)0x99,(byte)0x93},
+
                 {(byte)0xF0,(byte)0x9F,(byte)0x92,(byte)0xA9}
         };
 
